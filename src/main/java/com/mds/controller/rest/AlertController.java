@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -61,6 +62,17 @@ public class AlertController {
 			log.info("Alert insert:{}", alert);
 			Alert a = elasticService.insert(alert);
 			return ResponseEntity.status(HttpStatus.CREATED).body(a);
+		} catch (Exception e) {
+			log.error("Internal Error",e);
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	@PutMapping("/activate")
+	public ResponseEntity<?> activate(@RequestParam("id") String idAlert, @RequestParam("empleado") String empeado) {
+		try {
+			log.info("Alert activate:{}", idAlert);
+			Alert a = elasticService.activate(idAlert, empeado);
+			return ResponseEntity.ok(a);
 		} catch (Exception e) {
 			log.error("Internal Error",e);
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);

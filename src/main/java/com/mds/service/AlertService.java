@@ -1,6 +1,8 @@
 package com.mds.service;
 
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +27,8 @@ public class AlertService {
 
 	@Autowired private AlertRepository alertRepository;
 	@Autowired private ElasticsearchOperations elasticsearchTemplate;
+	private DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+	
 	
 	public Alert update(Alert alert) {
 		log.info("Index updated:{}",alert);
@@ -43,6 +47,24 @@ public class AlertService {
 		entity.setMotivo(alert.getMotivo());
 		entity.setEstatus(alert.getEstatus());
 		return alertRepository.save(entity);
+	}
+	public Alert activate(String idAlert, String empleado) {
+		
+		log.info("Activate:{}",idAlert);
+		Optional<Alert> o = alertRepository.findById(idAlert);
+		if (!o.isPresent()) {
+			throw new RuntimeException("Cannot update alert, invalid id:"+idAlert);
+		}
+		Alert entity = o.get();
+		entity.setEmpleado(empleado);
+		entity.setTimestamp(LocalDateTime.now().format(pattern));
+		entity.setArea("Mesa de Servicio");
+		entity.setMotivo("Reactivacion");
+		entity.setEstatus("0");
+		return alertRepository.save(entity);
+	}
+	public List<Alert> findAllActive() {
+		return alertRepository.findAllActive();
 	}
 	public List<Alert> findAll() {
 		List<Alert> alerts = new ArrayList<>();

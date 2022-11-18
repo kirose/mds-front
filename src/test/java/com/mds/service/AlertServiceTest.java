@@ -1,4 +1,4 @@
-package com.mds.controller;
+package com.mds.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.mds.model.Alert;
-import com.mds.service.AlertService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 class AlertServiceTest {
 	@Autowired AlertService alertService;
 	private DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+	private DateTimeFormatter isoPattern = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 	@Test
 	void insertAndFindById() {
 		Alert a = newAlert();
@@ -80,7 +80,7 @@ class AlertServiceTest {
 		e.setJustificacion("Justificacion2");
 		e.setSensor("Sensor2");
 		e.setVigencia("Vigencia2");
-		e.setEstatus("Completado2");
+		e.setEstatus("2");
 		e.setArea("Area2");
 		e.setDispositivo("Dispositivo2");
 
@@ -124,10 +124,12 @@ class AlertServiceTest {
 		a.setHost("Host");
 		a.setJustificacion("Justificacion");
 		a.setSensor("Sensor");
+		a.setMotivo("Motivo");
 		a.setVigencia("Vigencia");
-		a.setEstatus("Completado");
+		a.setEstatus("1");
 		a.setArea("Area");
 		a.setDispositivo("Dispositivo");
+		a.setTimestamp(LocalDateTime.now().format(isoPattern));
 		return a;
 	}
 }
