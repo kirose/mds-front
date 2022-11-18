@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 class AlertServiceTest {
 	@Autowired AlertService alertService;
 	private DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
-	private DateTimeFormatter isoPattern = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+
 	@Test
 	void insertAndFindById() {
 		Alert a = newAlert();
@@ -129,7 +129,7 @@ class AlertServiceTest {
 		a.setEstatus("1");
 		a.setArea("Area");
 		a.setDispositivo("Dispositivo");
-		a.setTimestamp(LocalDateTime.now().format(isoPattern));
+		a.setTimestamp(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
 		return a;
 	}
 }

@@ -40,6 +40,16 @@ public class AlertController {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	@GetMapping("/findAllInactive")
+	public List<Alert> findAllInactive() {
+		try {
+			log.info("Elastic findAllInactive");
+			return elasticService.findAllInactive();
+		} catch (Exception e) {
+			log.error("Internal Error",e);
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 	@GetMapping("/find/{id}")
 	public Alert findById(@PathVariable(value = "id") String id) {
 		log.info("Alert findbyId:{}",id);

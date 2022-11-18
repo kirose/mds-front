@@ -27,7 +27,6 @@ public class AlertService {
 
 	@Autowired private AlertRepository alertRepository;
 	@Autowired private ElasticsearchOperations elasticsearchTemplate;
-	private DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 	
 	
 	public Alert update(Alert alert) {
@@ -57,14 +56,14 @@ public class AlertService {
 		}
 		Alert entity = o.get();
 		entity.setEmpleado(empleado);
-		entity.setTimestamp(LocalDateTime.now().format(pattern));
+		entity.setTimestamp(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
 		entity.setArea("Mesa de Servicio");
 		entity.setMotivo("Reactivacion");
 		entity.setEstatus("0");
 		return alertRepository.save(entity);
 	}
-	public List<Alert> findAllActive() {
-		return alertRepository.findAllActive();
+	public List<Alert> findAllInactive() {
+		return alertRepository.findAllInactive();
 	}
 	public List<Alert> findAll() {
 		List<Alert> alerts = new ArrayList<>();
